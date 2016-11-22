@@ -1,0 +1,53 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{scrextend} %\ifoddpage
+\usepackage{changepage}
+\usepackage{fancyhdr} %Kopf- und Fußzeile
+\pagestyle{fancy}
+\fancyhf{}
+\usepackage[encoding,filenameencoding=utf8x]{grffile}
+%Kopfzeile links bzw. innen
+%Kopfzeile rechts bzw. außen
+\fancyhead[R]{\today}
+\fancyhead[L]{Review $reviewTemplate.getTitle()}
+%Linie oben
+%Fußzeile mittig
+%Fußzeile gerade rechts
+
+\renewcommand{\footrulewidth}{0.5pt} %Linie unten
+\begin{document}
+
+
+        \fancyhf{}
+
+        \section*{$reviewTemplate.getTitle()}
+	    \begin{minipage}[t]{0.4\textwidth}
+	        \subsection*{Items}
+	        \begin{itemize}
+                #foreach( $ingredient in $reviewTemplate.getData())
+                    \item {hello $ingredient}
+                #end
+	        \end{itemize}
+	    \end{minipage}
+	    \hfill
+        \begin{minipage}[t]{0.4\textwidth}
+            \vspace{-2ex}
+            \includegraphics[width=2cm]{${imgDir}/logo.png}
+        \end{minipage}
+        \subsection*{Comments}
+        reviewTemplate.getText()\\
+        \checkoddpage
+        \ifoddpage
+            \lfoot{Test}
+        	\newpage{}
+       	    \thispagestyle{empty}
+     	    \mbox{}
+     	    \newpage
+       	\else
+       	    \rfoot{Test}
+       		\newpage{}
+        \fi
+\end{document}

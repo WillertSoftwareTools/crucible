@@ -1,0 +1,45 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.artifactId}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>
+
+    <!-- <servlet-context-listener name="Hello World Listener" key="helloWorld" class="de.willert.crucible.reportpluginplugin.reportplugin.PluginConfig">
+        <description>Initialises the Hello World plugin.</description>
+    </servlet-context-listener> -->
+
+    <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer" filter=""/>
+    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" filter=""/>
+    <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" filter=""/>
+
+    <component key="PDFBuilder" class="de.willert.crucible.reportplugin.template.PDFBuilder" public="false">
+        <description>Provides Report Generator Service</description>
+    </component>
+    <component key="FillTemplateHelper" class="de.willert.crucible.reportplugin.template.FillTemplateHelper" public="false">
+        <description>FillTemplateHelper</description>
+    </component>
+    <component key="ReviewTemplate" class="de.willert.crucible.reportplugin.template.ReviewTemplate" public="false">
+        <description>ReviewTemplate</description>
+    </component>
+
+    <servlet key="reportServlet" class="de.willert.crucible.reportplugin.servlets.ReportServlet">
+        <url-pattern>/report-servlet</url-pattern>
+    </servlet>
+
+    <web-item key="review-pdf-button" section="system.crucible.review">
+        <link>/plugins/servlet/report-servlet?permaId=${helper.review.permaId.id}</link>
+        <label>Generate PDF Report</label>
+        <param name="data.action-label">Generate</param>
+        <condition class="com.atlassian.fisheye.plugin.web.conditions.HasCrucible"/>
+    </web-item>
+
+    <resource name="view" type="velocity" location="mytemplate.vm"/>
+
+    <web-resource key="hallo" name="Webresources for Report Plugin" >
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        <dependency>com.atlassian.auiplugin:aui-select2</dependency>
+        <resource type="download" name="style.css" location="view/css/style.css"/>
+    </web-resource>
+
+</atlassian-plugin>

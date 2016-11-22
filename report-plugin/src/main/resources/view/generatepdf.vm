@@ -1,0 +1,12 @@
+#include("view/frag-header.vm")
+<h2>Generate Report</h2>
+<h3>Fetch data for ${permaId}</h3>
+<p>
+    This will fetch the review data from crucible and generate a latex template.
+    You will be able to customize this template in the next step.
+</p>
+<form class="aui" method="get">
+    <input type="hidden" name="step" value="TWO" />
+    <input type="submit" class="aui-button aui-button-primary" value="Next" />
+</form>
+#include("view/frag-footer.vm")

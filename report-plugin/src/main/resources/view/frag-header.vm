@@ -1,0 +1,11 @@
+<html>
+<head>
+    <meta name="decorator" content="crucible.report.tab"/>
+    <title>Generate Report</title>
+</head>
+<body class="aui-page-focused aui-page-size-large">
+<div id="page">
+    <section id="content" role="main">
+        <div class="aui-page-panel">
+            <div class="aui-page-panel-inner">
+                <section class="aui-page-panel-content">

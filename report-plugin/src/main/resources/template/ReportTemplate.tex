@@ -1,0 +1,153 @@
+\documentclass[11pt,a4paper,fleqn]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{url}
+\usepackage[numbers]{natbib}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[autostyle=true,german=quotes]{csquotes}
+\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+% Used to apply raggedright to the toc to fix paths %
+\usepackage{tocstyle}
+\renewcommand*\rmdefault{phv}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+%*****************************************
+%Kopf- und Fußzeile
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+%Kopfzeile links bzw. innen
+\fancyhead[L]{Willert Software Tools GmbH\\www.willert.de}
+%Kopfzeile mittig
+%\fancyhead[C]{Kopfzeile mittig}
+%Kopfzeile rechts bzw. außen
+\fancyhead[R]{$reviewTemplate.getPermaId().getId()}
+%Linie oben
+\renewcommand{\headrulewidth}{0.5pt}
+
+%Fußzeile links
+\fancyfoot[l]{Page \thepage{} of \pageref{LastPage}}
+%Fußzeile mittig
+%\fancyfoot[c]{Mitte}
+%Fußzeile rechts
+\fancyfoot[r]{\today}
+%Linie unten
+\renewcommand{\footrulewidth}{0.5pt}
+
+%*****************************************
+% Color definitions
+\colorlet{mygray}{gray!30}
+
+% Stretch table row height
+\renewcommand{\arraystretch}{3.5}
+\definecolor{Gray}{gray}{0.9}
+\newcolumntype{G}{>{\columncolor{Gray}}X}
+
+% Customize site header
+\renewcommand{\headrule}{\hbox to\headwidth{%
+  \color{mygray}\leaders\hrule height \headrulewidth\hfill}}
+
+% Customize headings
+\usepackage[raggedright]{titlesec}
+\titleformat{\section}
+  {\normalfont\sffamily\Large\fontfamily{phv}\selectfont\raggedright}
+  {\thesection.}{.5em}{}[{\vspace{.2ex}\titleline{\color{mygray}\titlerule[2pt]}}]
+\titleformat{\subsection}
+  {\normalfont\sffamily\large\fontfamily{phv}\selectfont\raggedright}
+  {\thesubsection.}{.5em}{}[{\vspace{.2ex}\titleline{\color{mygray}\titlerule[1.5pt]}}]
+\titleformat{\subsubsection}
+  {\normalfont\sffamily\normalsize\fontfamily{phv}\selectfont\raggedright}
+  {\thesubsubsection.}{.5em}{}[{\vspace{.2ex}\titleline{\color{mygray}\titlerule[1pt]}}]
+
+% apply raggedright to the toc to fix paths %
+\settocfeature{raggedhook}{\raggedright}
+
+% Document starts
+\begin{document}
+
+\newpage
+
+
+% Page header
+\markboth{Author et al.}{Short title}
+
+% Title
+\title{ Review of \enquote{$reviewTemplate.getTitle()}}
+
+
+%Authors, affiliations address.
+\dedication{#foreach( $reviewer in $reviewTemplate.getReviewers())
+$reviewer.getDisplayName()
+#end}
+
+% sample of unsatisfied variable
+$unknownVariable
+
+\maketitle
+
+\begin{tabularx}{\textwidth}{ |G|X| }
+  \hline
+  Version & $reviewTemplate.getVersion().getTime() \\
+  \hline
+  Date  & \today  \\
+  \hline
+  Author \newline \vbox to 2cm { \vfil }
+  \textit{(Date and Signature)} & $reviewTemplate.getAuthor().getDisplayName()  \\
+  \hline
+  Approved by \newline \vbox to 2cm { \vfil }
+  \textit{(Date and Signature)} &  \\
+  \hline
+\end{tabularx}
+
+\thispagestyle {empty}
+\newpage
+
+%Table of Contents
+\newpage
+\renewcommand*\contentsname{Table of Contents}
+\tableofcontents
+\thispagestyle {empty}
+\newpage
+
+\setcounter{page}{1}
+
+% Heading 1
+\section{Summary}
+Review start date: $reviewTemplate.getStartDate()\\
+Latest svn qualification branch revision: $reviewTemplate.getLatestRevision()\\
+
+#if ( !$reviewTemplate.getReviewers().isEmpty() )
+Reviewer:
+\begin{itemize}
+#foreach( $reviewer in $reviewTemplate.getReviewers())
+    \item{$reviewer.getDisplayName()}
+#end
+\end{itemize}
+#end
+
+\section{Reviewed Changes}
+
+
+#foreach( $reviewItem in $reviewTemplate.getReviewItems())
+\subsection{$reviewItem.getToPath().replaceAll("branches/([^/]+/)", "").replaceAll("/", "\\slash ")}
+    From revision $reviewItem.getFromRevision() to revision $reviewItem.getToRevision()\\
+    Commited by: $reviewItem.getAuthorName()\\
+    Commit Type: $reviewItem.getCommitType()\\
+    Commit Date: $reviewItem.getCommitDate()\\
+    #set ($versionedComments = $reviewTemplate.getVersionedCommentsRendered($reviewItem.getPermId().getId()))
+    #if ( !$versionedComments.isEmpty() )
+        Comments
+        $versionedComments
+    #end
+#end
+
+\section{General Comments}
+
+$reviewTemplate.getGeneralCommentsRendered()
+
+\end{document}
