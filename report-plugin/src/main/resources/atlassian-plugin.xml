@@ -38,8 +38,8 @@
 
     <web-resource key="report-generate" name="Webresources for Report Plugin" >
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="style.css" location="view/css/style.css"/>
+        <resource type="download" name="js.js" location="view/js/js.js"/>
     </web-resource>
 
 </atlassian-plugin>

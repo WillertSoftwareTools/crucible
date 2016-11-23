@@ -66,26 +66,4 @@
 <div id="editor" class="full-width"></div>
 
 <script src="https://ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="UTF-8"></script>
-<script>
-
-    var editor = ace.edit("editor");
-    var Range = ace.require('ace/range').Range;
-    var _range = new Range(7, 0, 7, 1);
-    editor.setTheme("ace/theme/chrome");
-    editor.getSession().setMode("ace/mode/latex");
-    editor.getSession().setMode("ace/mode/latex");
-    editor.getSession().addMarker(
-            _range, "ace_active-line", "fullLine"
-    );
-
-    jQuery(document).ready( function($) {
-        editor.getSession().setValue( $(this).find(':input[name=lines]').text() );
-        $('form#generate').bind('submit', function () {
-        $(this).find(':input[name=lines]').prop('value', editor.getValue());
-        });
-        $('form#generate').bind('submit', function () {
-        $('form#fix').find(':input').prop('value', editor.getValue());
-        });
-    });
-</script>
 #include("view/frag-footer.vm")
