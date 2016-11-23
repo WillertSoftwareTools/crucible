@@ -41,7 +41,7 @@
 #foreach( $unreplacedVariable in $unreplacedVariables )
     <div class="field-group">
         <label for="$unreplacedVariable">$unreplacedVariable</label>
-        <input class="text medium-field" id="$unreplacedVariable" name="$unreplacedVariable" title="$unreplacedVariable" placeholder="content" type="text">
+        <input class="text medium-field" id="$unreplacedVariable" name="$unreplacedVariable" title="$unreplacedVariable" placeholder="replacement" type="text">
         <span class="aui-icon icon-help">help</span>
         <div class="description">Medium width input</div>
     </div>
