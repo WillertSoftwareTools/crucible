@@ -19,24 +19,18 @@ import java.util.function.Predicate;
  */
 public class TemplateEnvironment {
     private final String tempDirectory;
-    private final String destinationDir;
     private final String tmpSubDir;
     private String destinationFilename;
 
     @Inject
-    public TemplateEnvironment(String destinationDir, String tmpSubDir, String destinationFilename) {
-        this.destinationDir = destinationDir;
+    public TemplateEnvironment(String tmpSubDir, String destinationFilename) {
         this.tmpSubDir = tmpSubDir;
         this.tempDirectory = Paths.get(FileUtils.getTempDirectoryPath(), tmpSubDir).toString();
         this.destinationFilename = destinationFilename;
     }
 
     public File getDestinationFile() {
-        return new File(System.getProperty(destinationDir), destinationFilename);
-    }
-
-    public String getDestinationDir() {
-        return destinationDir;
+        return new File(getTemplateFile().get().getParentFile().getAbsolutePath(), destinationFilename);
     }
 
     public Optional<File> getTemplateFile() {

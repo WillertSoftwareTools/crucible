@@ -35,7 +35,6 @@ public class PDFBuilder {
                                           .orElseThrow(() -> new IllegalStateException("Unable to get Template file"));
         transformFile = templateEnvironment.getTransformFile()
                                            .orElseThrow(() -> new IllegalStateException("Unable to get Transformer file"));
-        System.out.println(templateEnvironment.getDestinationDir());
     }
 
     public File getTemplateFile() {
@@ -111,7 +110,6 @@ public class PDFBuilder {
         JLRGenerator generator = new JLRGenerator();
         if (generator.generate(inputTexFile, inputTexFile.getParentFile(), rootDir)) {
             File tempGeneratedPDF = findPDFFile(inputTexFile);
-            FileUtils.copyFile(tempGeneratedPDF, outputPDFFile);
             //JLROpener.open(outputPDFFile);
             return Optional.of(outputPDFFile);
         } else {
