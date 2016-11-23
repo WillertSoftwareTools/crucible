@@ -73,7 +73,8 @@ public class ReportServlet extends HttpServlet {
             try {
                 buildPDF = pdfBuilder.buildPDF(overwrittenTransform);
             } catch (Exception | TexParserException e) {
-                resp.sendError(500, e.getMessage());
+                throw new IllegalStateException("Error while generating pdf.: " + e.getMessage() + " \n\n" + Arrays.toString(e
+                        .getStackTrace()) + "\n\n" + FileUtils.readFileToString( new File(overwrittenTransform.getParentFile().getAbsoluteFile(), overwrittenTransform.getName().replaceAll("\\..+", ".log")) ));
             }
 
             if (buildPDF.isPresent()) {
@@ -84,10 +85,10 @@ public class ReportServlet extends HttpServlet {
                 output.write(FileUtils.readFileToByteArray(buildPDF.get()));
                 output.close();
             } else {
-                resp.sendError(500, "Error while generating pdf.");
+                throw new IllegalStateException("Error while generating pdf.");
             }
         } else {
-            resp.sendError(500, "No lines passed");
+            throw new IllegalStateException("No lines passed");
         }
     }
 
