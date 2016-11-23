@@ -51,7 +51,7 @@
 #end
 
 <form class="aui" id="generate" method="post">
-    <textarea name="lines" class="full-size" rows="75">#foreach ( $line in $lines ) $line
+    <textarea hidden="hidden" name="lines" class="full-size" rows="75">#foreach ( $line in $lines ) $line
 #end</textarea>
 
     <input class="aui-button aui-button-primary" type="submit" value="Generate">
