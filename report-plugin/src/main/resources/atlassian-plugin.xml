@@ -36,7 +36,7 @@
 
     <resource name="view" type="velocity" location="mytemplate.vm"/>
 
-    <web-resource key="hallo" name="Webresources for Report Plugin" >
+    <web-resource key="report-generate" name="Webresources for Report Plugin" >
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="style.css" location="view/css/style.css"/>

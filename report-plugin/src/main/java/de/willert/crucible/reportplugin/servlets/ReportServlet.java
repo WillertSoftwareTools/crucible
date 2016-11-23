@@ -112,7 +112,7 @@ public class ReportServlet extends HttpServlet {
         }
 
         resp.setContentType("text/html");
-        pageBuilderService.assembler().resources().requireWebResource("de.willert.crucible.reportplugin:hallo");
+        pageBuilderService.assembler().resources().requireWebResource("de.willert.crucible.reportplugin:report-generate");
         switch (STEP) {
             case TWO:
                 step2(req, resp);
