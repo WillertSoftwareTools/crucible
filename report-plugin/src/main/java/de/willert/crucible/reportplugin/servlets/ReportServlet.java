@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -69,7 +70,7 @@ public class ReportServlet extends HttpServlet {
             File overwrittenTransform = pdfBuilder.getTransformFile();
             FileUtils.writeStringToFile(overwrittenTransform, lines, "UTF-8");
 
-            Optional<File> buildPDF = Optional.empty();
+            Optional<File> buildPDF;
             try {
                 buildPDF = pdfBuilder.buildPDF(overwrittenTransform);
             } catch (Exception | TexParserException e) {
