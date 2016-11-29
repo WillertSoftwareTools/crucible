@@ -25,13 +25,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.Files;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 
 public class ReportServlet extends HttpServlet {
@@ -46,7 +43,7 @@ public class ReportServlet extends HttpServlet {
     private List<String> messages;
 
     private List<String> lines;
-    private STEPS STEP;
+    private STEPS nextStep;
     private String permaId;
     private List<String> unreplacedVariables;
 
@@ -62,20 +59,57 @@ public class ReportServlet extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        prepareResponse(resp);
+        step1(req, resp);
+    }
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
+        prepareResponse(resp);
+        checkAuthentication(req, resp);
+        nextStep = req.getParameter("nextStep").isEmpty() ? STEPS.ONE : STEPS.valueOf(req.getParameter("nextStep"));
+        switch (nextStep) {
+            case TWO:
+                step2(req, resp);
+                break;
+            case THREE:
+                step3(req, resp);
+                break;
+            case ONE:
+            default:
+                step1(req, resp);
+                break;
+        }
+    }
 
-        if (req.getParameterMap().containsKey("lines")) {
-            String lines = req.getParameter("lines");
-            File overwrittenTransform = pdfBuilder.getTransformFile();
-            FileUtils.writeStringToFile(overwrittenTransform, lines, "UTF-8");
+    private void checkAuthentication(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        UserProfile user = userManager.getRemoteUser(req);
+        if (null == user) {
+            redirectToLogin(req, resp);
+            return;
+        }
+        if (!userManager.isUserInGroup(user.getUserKey(), "crucible-users")) {
+            resp.sendError(403, "You must be a registered user to generate reports.");
+            return;
+        }
+    }
+
+    private void prepareResponse(HttpServletResponse resp) {
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("UTF-8");
+        pageBuilderService.assembler().resources().requireWebResource("de.willert.crucible.reportplugin:report-generate");
+    }
+
+    private void step3(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+            updateLines(req);
 
             Optional<File> buildPDF;
             try {
-                buildPDF = pdfBuilder.buildPDF(overwrittenTransform);
+                buildPDF = pdfBuilder.buildPDF(pdfBuilder.getTransformFile());
             } catch (Exception | TexParserException e) {
                 throw new IllegalStateException("Error while generating pdf.: " + e.getMessage() + " \n\n" + Arrays.toString(e
-                        .getStackTrace()) + "\n\n" + FileUtils.readFileToString( new File(overwrittenTransform.getParentFile().getAbsoluteFile(), overwrittenTransform.getName().replaceAll("\\..+", ".log")) ));
+                        .getStackTrace()) + "\n\n" + FileUtils.readFileToString( new File(pdfBuilder.getTransformFile().getParentFile().getAbsoluteFile(), pdfBuilder.getTransformFile().getName().replaceAll("\\..+", ".log")) ));
             }
 
             if (buildPDF.isPresent()) {
@@ -88,79 +122,51 @@ public class ReportServlet extends HttpServlet {
             } else {
                 throw new IllegalStateException("Error while generating pdf.");
             }
-        } else {
-            throw new IllegalStateException("No lines passed");
-        }
-    }
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameterMap().containsKey("step")) {
-            String stepParam = req.getParameter("step");
-            STEP = STEPS.valueOf(stepParam);
-        } else {
-            STEP = STEPS.ONE;
-        }
-
-        UserProfile user = userManager.getRemoteUser(req);
-        if (null == user) {
-            redirectToLogin(req, resp);
-            return;
-        }
-        if (!userManager.isUserInGroup(user.getUserKey(), "crucible-users")) {
-            resp.sendError(403, "You must be a registered user to generate reports.");
-            return;
-        }
-
-        resp.setContentType("text/html");
-        pageBuilderService.assembler().resources().requireWebResource("de.willert.crucible.reportplugin:report-generate");
-        switch (STEP) {
-            case TWO:
-                step2(req, resp);
-                break;
-            case ONE:
-            default:
-                step1(req, resp);
-                break;
-        }
     }
 
     private void step2(HttpServletRequest req, HttpServletResponse response) throws IOException {
-        if( !req.getParameterMap().containsKey("lines")) {
 
-            final ReviewTemplate reviewTemplate = fillTemplateHelper.fillTemplate(permaId);
-            File transformFile = pdfBuilder.transformToTex(reviewTemplate, pdfBuilder.getTemplateFile(), pdfBuilder.getTransformFile())
-                                     .orElseThrow(IllegalArgumentException::new);
-            lines = FileUtils.readLines(transformFile, "UTF-8");
-            checkSanity(reviewTemplate);
-        } else {
-            lines = Lists.newArrayList(req.getParameter("lines").split("\\n"));
-        }
+        updateLines(req);
 
-
-        for( String unreplacedVariable : unreplacedVariables ) {
+        unreplacedVariables = findUnreplacedVariables(lines);
+        for (Iterator<String> iterator = unreplacedVariables.iterator(); iterator.hasNext();) {
+            String unreplacedVariable = iterator.next();
             if( req.getParameterMap().containsKey(unreplacedVariable) ) {
                 lines.replaceAll(s -> s.replaceAll("\\"+unreplacedVariable+"", req.getParameter(unreplacedVariable)));
+                iterator.remove();
             }
         }
-        unreplacedVariables = findUnreplacedVariables(lines);
+        Files.write( pdfBuilder.getTransformFile().toPath(), lines);
+        lines = FileUtils.readLines(pdfBuilder.getTransformFile(), "UTF-8");
         templateRenderer.render("view/generatepdf-preview.vm", ImmutableMap.<String, Object>builder()
                                                                                                      .put("permaId", permaId)
                                                                                                      .put("lines", lines)
-                                                                                                     .put("step", STEP)
                                                                                                      .put("messages", messages)
                                                                                                      .put("unreplacedVariables", unreplacedVariables)
                                                                                                      .build(), response.getWriter());
     }
 
+    private void updateLines(HttpServletRequest req) throws IOException {
+        if( !req.getParameterMap().containsKey("lines")) {
+
+            final ReviewTemplate reviewTemplate = fillTemplateHelper.fillTemplate(permaId);
+            File transformFile = pdfBuilder.transformToTex(reviewTemplate, pdfBuilder.getTemplateFile(), pdfBuilder.getTransformFile())
+                                           .orElseThrow(IllegalArgumentException::new);
+            lines = FileUtils.readLines(transformFile, "UTF-8");
+            checkSanity(reviewTemplate);
+        } else {
+            lines = Lists.newArrayList(req.getParameter("lines").split("\\n"));
+            Files.write( pdfBuilder.getTransformFile().toPath(), lines);
+        }
+    }
+
     private void step1(HttpServletRequest request, HttpServletResponse response) throws IOException {
         permaId = request.getParameter("permaId");
         if (null == permaId) {
-            response.sendError(400, "No review for reportplugin generation passed. Please just use the UI to get here.");
-            return;
+            throw new IllegalStateException("No review for reportplugin generation passed. Please just use the UI to get here.");
         }
         templateRenderer.render("view/generatepdf.vm", ImmutableMap.<String, Object>builder().put("permaId", permaId)
-                                                                                             .put("step", STEP)
                                                                                              .build(), response.getWriter());
     }
 
@@ -183,7 +189,7 @@ public class ReportServlet extends HttpServlet {
         return requestURL.substring(0, requestURL.indexOf(servletPath));
     }
 
-    private enum STEPS {ONE, TWO}
+    private enum STEPS {ONE, TWO, THREE}
 
     private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
@@ -201,14 +207,14 @@ public class ReportServlet extends HttpServlet {
     }
 
     public List<String> findUnreplacedVariables(final List<String> lines) throws IOException {
-        List<String> unreplaced = Lists.newArrayList();
+        List<String> unreplaced = new Vector<>();
 
-        final Predicate<String> stringPredicate = Pattern.compile("\\$.+").asPredicate();
+        final Predicate<String> stringPredicate = Pattern.compile("(\\$\\w+)").asPredicate();
 
-        final List<String> collect = lines.stream()
-                                          .filter(stringPredicate)
-                                          .collect(Collectors.toList());
-        unreplaced = collect;
+        lines.stream().filter(stringPredicate)
+                      .map(String::trim)
+                      .forEach(unreplaced::add);
+
         return unreplaced;
     }
 

@@ -12,15 +12,14 @@ jQuery(document).ready( function($) {
 
     editor.getSession().setValue( $(this).find(':input[name=lines]').text() );
 
-
-    $('form#generate').bind('submit', function () {
-        var lines = $(this).find(':input[name=lines]');
-        lines.prop('value', editor.getValue());
+    $( "#fix" ).click(function() {
+        $(this).parents('form:first').find(':input[name=lines]').prop('value', editor.getSession().getValue());
+        $("#generate-report").find('input[name=nextStep]').prop('value', "TWO");
+        document.getElementById("generate-report").submit();
     });
-    $('form#generate').bind('submit', function () {
-        var fix_fields = $('form#fix').find(':input');
-        $.each( fix_fields, function( key, value ) {
-            value.prop('value', value);
-        });
+    $( "#generate" ).click(function() {
+        $(this).parents('form:first').find(':input[name=lines]').prop('value', editor.getSession().getValue());
+        $("#generate-report").find('input[name=nextStep]').prop('value', "THREE");
+        document.getElementById("generate-report").submit();
     });
 });
