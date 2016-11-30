@@ -46,18 +46,18 @@
     </div>
 #end
     <input class="aui-button aui-button-primary" id="fix" type="button" value="Fix">
+#else
+    <input class="aui-button aui-button-primary" id="generate" type="button" value="Generate">
 #end
-    <input type="hidden" name="nextStep" value="" />
     <textarea hidden="hidden" name="lines" class="full-size" rows="75">#foreach ( $line in $lines ) $line
 #end</textarea>
 
-    <input class="aui-button aui-button-primary" id="generate" type="button" value="Generate">
 </form>
 
 <style>
     #editor {
         position: relative;
-        height:400px;
+        height: 400px;
     }
 </style>
 <div id="editor" class="full-width"></div>

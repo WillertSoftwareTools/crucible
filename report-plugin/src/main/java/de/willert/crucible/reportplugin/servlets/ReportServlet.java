@@ -41,7 +41,6 @@ public class ReportServlet extends HttpServlet {
     private final PageBuilderService pageBuilderService;
 
     private List<String> messages;
-
     private List<String> lines;
     private STEPS nextStep;
     private String permaId;
@@ -67,7 +66,7 @@ public class ReportServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         prepareResponse(resp);
         checkAuthentication(req, resp);
-        nextStep = req.getParameter("nextStep").isEmpty() ? STEPS.ONE : STEPS.valueOf(req.getParameter("nextStep"));
+        nextStep = STEPS.literalFor( req.getServletPath() );
         switch (nextStep) {
             case TWO:
                 step2(req, resp);
@@ -161,8 +160,8 @@ public class ReportServlet extends HttpServlet {
         }
     }
 
-    private void step1(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        permaId = request.getParameter("permaId");
+    private void step1(HttpServletRequest req, HttpServletResponse response) throws IOException {
+        permaId = req.getParameter("permaId");
         if (null == permaId) {
             throw new IllegalStateException("No review for reportplugin generation passed. Please just use the UI to get here.");
         }
@@ -188,8 +187,6 @@ public class ReportServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         return requestURL.substring(0, requestURL.indexOf(servletPath));
     }
-
-    private enum STEPS {ONE, TWO, THREE}
 
     private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
