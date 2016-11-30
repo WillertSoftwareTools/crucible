@@ -3,6 +3,7 @@
 <h3>Fetch data for ${permaId}</h3>
 <p>
     This will fetch the review data from crucible and generate a latex template.
+    This is a snapshot of the current review state. Changes after creating the template will not affect the template.
     You will be able to customize this template in the next step.
     It is recommended to use Firefox.
 </p>
