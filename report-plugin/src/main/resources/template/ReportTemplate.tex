@@ -140,6 +140,17 @@ Reviewer:
     Commited by: $reviewItem.getAuthorName()\\
     Commit Type: $reviewItem.getCommitType()\\
     Commit Date: $reviewItem.getCommitDate()\\
+
+    #if ( !$reviewItem.getParticipants().isEmpty() )
+    Reviewer:
+    \begin{itemize}
+    #foreach( $participantStatus in $reviewItem.getParticipants())
+        #set($completed = "#if($participantStatus.isCompleted())completed#{else}uncomplete#end")
+        \item{$participantStatus.getUser().getDisplayName() ($completed)}
+    #end
+    \end{itemize}
+    #end
+
     #set ($versionedComments = $reviewTemplate.getVersionedCommentsRendered($reviewItem.getPermId().getId()))
     #if ( !$versionedComments.isEmpty() )
         Comments
