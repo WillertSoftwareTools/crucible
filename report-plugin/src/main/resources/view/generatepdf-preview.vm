@@ -49,7 +49,7 @@
 #else
     <input class="aui-button aui-button-primary" id="generate" type="button" value="Generate">
 #end
-    <textarea hidden="hidden" name="lines" class="full-size" rows="75">#foreach ( $line in $lines ) $line
+    <textarea hidden="hidden" name="lines" class="full-size" rows="75">#foreach($line in $lines)$line
 #end</textarea>
 
 </form>
