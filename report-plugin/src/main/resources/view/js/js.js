@@ -1,7 +1,5 @@
 jQuery(document).ready( function($) {
 
-    AJS.inlineHelp();
-
     var editor = ace.edit("editor");
     var Range = ace.require('ace/range').Range;
     var _range = new Range(7, 0, 7, 1);
