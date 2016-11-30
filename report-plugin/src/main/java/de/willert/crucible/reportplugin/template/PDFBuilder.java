@@ -110,6 +110,7 @@ public class PDFBuilder {
         JLRGenerator generator = new JLRGenerator();
         if (generator.generate(inputTexFile, inputTexFile.getParentFile(), rootDir)) {
             File tempGeneratedPDF = findPDFFile(inputTexFile);
+            FileUtils.copyFile(tempGeneratedPDF, outputPDFFile);
             //JLROpener.open(outputPDFFile);
             return Optional.of(outputPDFFile);
         } else {
@@ -117,20 +118,14 @@ public class PDFBuilder {
         }
     }
 
-    private void fixCommonLatexPeculiarities(File inputTexFile) {
-        try {
+    private void fixCommonLatexPeculiarities(File inputTexFile) throws IOException {
             List<String> lines = FileUtils.readLines(inputTexFile, "UTF-8");
-            List<String> replaced = Lists.newArrayList();
+             List<String> replaced = Lists.newArrayList();
             for (String line : lines) {
-                line = line.replace("_", "\\_");
+                line = line.replaceAll("((?<!\\\\)(_+))", "\\\\textunderscore ");
                 replaced.add(line);
             }
-            //FileUtils.write(inputTexFile, replaced, "UTF-8");
             Files.write(inputTexFile.toPath(), replaced);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -140,7 +135,6 @@ public class PDFBuilder {
      * @param outputPDFFile specifies where the pdfFile should be saved
      * @param generator     JLR converter used plot
      * @return error message
-     * @throws IOException
      */
     private String extractErrorMessage(File inputTexFile, File outputPDFFile, JLRGenerator generator) throws IOException {
         String latexError = extractLatexError(inputTexFile);
@@ -175,8 +169,9 @@ public class PDFBuilder {
     private File findPDFFile(File sibling) {
         return FileUtils.listFiles(sibling.getParentFile(), new String[]{"pdf"}, false)
                         .stream()
+                        .filter(file -> FilenameUtils.removeExtension(file.getName()).equals(FilenameUtils.removeExtension(sibling.getName())))
                         .findFirst()
-                        .orElseThrow(() -> new IllegalStateException("A PDF generated PDF could not be found to moving it to it's destination."));
+                        .orElseThrow(() -> new IllegalStateException("A generated PDF could not be found to moving it to it's destination."));
     }
 
     /**

@@ -25,6 +25,8 @@
 
     <servlet key="reportServlet" class="de.willert.crucible.reportplugin.servlets.ReportServlet">
         <url-pattern>/report-servlet</url-pattern>
+        <url-pattern>/report-servlet-preview</url-pattern>
+        <url-pattern>/report-servlet-generate</url-pattern>
     </servlet>
 
     <web-item key="review-pdf-button" section="system.crucible.review">

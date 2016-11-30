@@ -35,9 +35,8 @@
     Use the back button of your browser if you wish to update the template once again.
 </p>
 
+<form class="aui" id="generate-report" method="post" accept-charset="UTF-8">
 #if( !$unreplacedVariables.isEmpty() )
-<form class="aui" id="fix" method="get">
-<input type="hidden" name="step" value="TWO" />
 #foreach( $unreplacedVariable in $unreplacedVariables )
     <div class="field-group">
         <label for="$unreplacedVariable">$unreplacedVariable</label>
@@ -46,21 +45,19 @@
         <div class="description">Medium width input</div>
     </div>
 #end
-    <input class="aui-button aui-button-primary" type="submit" value="Fix">
-</form>
+    <input class="aui-button aui-button-primary" id="fix" type="button" value="Fix">
+#else
+    <input class="aui-button aui-button-primary" id="generate" type="button" value="Generate">
 #end
-
-<form class="aui" id="generate" method="post">
     <textarea hidden="hidden" name="lines" class="full-size" rows="75">#foreach ( $line in $lines ) $line
 #end</textarea>
 
-    <input class="aui-button aui-button-primary" type="submit" value="Generate">
 </form>
 
 <style>
     #editor {
         position: relative;
-        height:400px;
+        height: 400px;
     }
 </style>
 <div id="editor" class="full-width"></div>

@@ -1,5 +1,7 @@
 jQuery(document).ready( function($) {
 
+    AJS.inlineHelp();
+
     var editor = ace.edit("editor");
     var Range = ace.require('ace/range').Range;
     var _range = new Range(7, 0, 7, 1);
@@ -10,17 +12,15 @@ jQuery(document).ready( function($) {
         _range, "ace_active-line", "fullLine"
     );
 
-    editor.getSession().setValue( $(this).find(':input[name=lines]').text() );
+    editor.getSession().setValue( $(this).find(':input[name=lines]').val() );
 
-
-    $('form#generate').bind('submit', function () {
-        var lines = $(this).find(':input[name=lines]');
-        lines.prop('value', editor.getValue());
+    $( "#fix" ).click(function() {
+        $(this).parents('form:first').find(':input[name=lines]').prop('value', editor.getSession().getValue());
+        document.getElementById("generate-report").submit();
     });
-    $('form#generate').bind('submit', function () {
-        var fix_fields = $('form#fix').find(':input');
-        $.each( fix_fields, function( key, value ) {
-            value.prop('value', value);
-        });
+    $( "#generate" ).click(function() {
+        $(this).parents('form:first').find(':input[name=lines]').prop('value', editor.getSession().getValue());
+        $(this).parents('form:first').attr('action', "./report-servlet-generate").submit();
+        document.getElementById("generate-report").submit();
     });
 });
