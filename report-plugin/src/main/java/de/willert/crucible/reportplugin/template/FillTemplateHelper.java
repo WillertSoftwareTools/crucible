@@ -3,7 +3,7 @@ package de.willert.crucible.reportplugin.template;
 import com.atlassian.crucible.spi.PermId;
 import com.atlassian.crucible.spi.data.*;
 import com.atlassian.crucible.spi.services.ReviewService;
-import org.apache.commons.collections.ListUtils;
+import org.apache.commons.collections4.ListUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -28,13 +28,12 @@ public class FillTemplateHelper {
     }
 
     /**
-     * Provisions template
+     * Provisions template.
      * @param rId The review id
      * @return template
      */
     public ReviewTemplate fillTemplate(String rId) {
-        final PermId<ReviewData> permId = new PermId(rId);
-        //final ReviewData reviewData = reviewService.getReview(permId);
+        final PermId<ReviewData> permId = new PermId<>(rId);
         final DetailedReviewData reviewDetails = reviewService.getReviewDetails(permId);
         final List<FisheyeReviewItemData> reviewItems = reviewService.getReviewDetails(permId).getReviewItems().reviewItem;
 
@@ -64,7 +63,7 @@ public class FillTemplateHelper {
                                                       .max(Long::compareTo)
                                                       .orElseThrow(IllegalStateException::new));
 
-        List<CommentData> allComments = ListUtils.union( reviewTemplate.getGeneralComments(), reviewTemplate.getVersionedComments() );
+        List<CommentData> allComments = ListUtils.union(reviewTemplate.getGeneralComments(), reviewTemplate.getVersionedComments() );
         Map<String, CommentResolutionData> commentResolutionData = new HashMap<>();
         for( CommentData v : allComments ) {
             PermId<CommentData> permaId = new PermId<>(v.getPermaIdAsString());
