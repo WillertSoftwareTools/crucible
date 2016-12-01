@@ -66,7 +66,7 @@ public class ReportServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         prepareResponse(resp);
         checkAuthentication(req, resp);
-        nextStep = STEPS.literalFor( req.getServletPath() );
+        nextStep = STEPS.enumConstantForPath( req.getServletPath() );
         switch (nextStep) {
             case TWO:
                 step2(req, resp);

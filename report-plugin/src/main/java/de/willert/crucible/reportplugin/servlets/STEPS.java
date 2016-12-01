@@ -20,7 +20,7 @@ public enum STEPS {
         return path;
     }
 
-    public static STEPS literalFor(String servletPath) {
+    public static STEPS enumConstantForPath(String servletPath) {
         return Stream.of(STEPS.values())
                      .filter(steps -> steps.getPath().equals(servletPath))
                      .findFirst()
