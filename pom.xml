@@ -26,6 +26,7 @@
     <modules>
         <module>extended-api</module>
         <module>report-plugin</module>
+        <module>latex-errorparser</module>
     </modules>
 
     <properties>
