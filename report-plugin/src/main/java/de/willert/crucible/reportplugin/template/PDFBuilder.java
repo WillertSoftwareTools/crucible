@@ -9,7 +9,8 @@ package de.willert.crucible.reportplugin.template;
 import com.google.common.collect.Lists;
 import de.nixosoft.jlr.JLRConverter;
 import de.nixosoft.jlr.JLRGenerator;
-import de.willert.crucible.reportplugin.template.exception.TexExceptionParser;
+import de.willert.crucible.latex.errorparser.ProblemMarker;
+import de.willert.crucible.latex.errorparser.TexExceptionParser;
 import de.willert.crucible.reportplugin.template.exception.TexParserException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -152,7 +153,7 @@ public class PDFBuilder {
     private String extractLatexError(File sibling) throws IOException {
         try {
         final List<String> lines = Files.readAllLines(findLogFile(sibling).toPath(), Charset.defaultCharset());
-            final List<String> errors = new TexExceptionParser().parseErrors(findLogFile(sibling), lines);
+            final List<ProblemMarker> errors = new TexExceptionParser().parseErrors(findLogFile(sibling), lines);
             if( !errors.isEmpty() )
                 return StringUtils.join( errors.toArray() );
             return lines.stream()

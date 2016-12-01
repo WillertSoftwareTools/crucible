@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
  */
 public class TexExceptionParser {
     private static final int MAX_LINE_LENGTH = 79;
-    private List<String> problems = Lists.newArrayList();
+    private List<ProblemMarker> problems = Lists.newArrayList();
     private List<ExceptionType> exceptionTypes;
 
     public TexExceptionParser() {
@@ -189,18 +189,25 @@ public class TexExceptionParser {
         );
     }
 
-    public List<String> parseErrors(File resource, List<String> output) {
+    /**
+     * Parse the output of the LaTeX program.
+     *
+     * @param resource the input tex file that was processed
+     * @param output   the output of the external program
+     * @return a list of error messages
+     */
+    public List<ProblemMarker> parseErrors(File resource, List<String> output) {
         return parseErrors(resource, output.toString() );
     }
 
     /**
      * Parse the output of the LaTeX program.
      *
-     * @param resource the input file that was processed
+     * @param resource the input tex file that was processed
      * @param output   the output of the external program
      * @return true, if error messages were found in the output, false otherwise
      */
-    public List<String> parseErrors(File resource, String output) {
+    public List<ProblemMarker> parseErrors(File resource, String output) {
 
         StringTokenizer st = new StringTokenizer(output, "\r\n");
         int lineNr = 0;
@@ -231,6 +238,12 @@ public class TexExceptionParser {
      * @param resource The tex file
      */
     private void addProblemMarker(ExceptionType e, int linenr, File resource) {
-        problems.add("error = [" + e.getHumanReadableHint() + "], linenr = [" + linenr + "], severity = [" + e.getSeverity() + "], resource = [" + resource + "]");
+        final ProblemMarker problemMarker = ProblemMarker.ProblemMarkerBuilder.aProblemMarker()
+                                                                      .withHumanReadableHint(e.getHumanReadableHint())
+                                                                      .withLineNumber(linenr)
+                                                                      .withSeverity(e.getSeverity())
+                                                                      .withExtraInfoURL(e.getExtraInfoURL())
+                                                                      .build();
+        problems.add( problemMarker );
     }
 }
