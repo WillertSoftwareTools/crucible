@@ -1,4 +1,10 @@
-package de.willert.crucible.reportplugin.extendedapi;
+/*
+ * Willert Software Tools GmbH
+ * Copyright (C) 2016 Willert Software Tools GmbH
+ * This file is covered by the LICENSE file in the root of this project.
+ */
+
+package de.willert.crucible.extendedapi;
 
 import com.atlassian.crucible.spi.data.CommentResolutionStatus;
 import com.atlassian.crucible.spi.data.UserData;

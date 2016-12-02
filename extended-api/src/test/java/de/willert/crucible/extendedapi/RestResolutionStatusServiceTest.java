@@ -1,4 +1,10 @@
-package de.willert.crucible.reportplugin.extendedapi;
+/*
+ * Willert Software Tools GmbH
+ * Copyright (C) 2016 Willert Software Tools GmbH
+ * This file is covered by the LICENSE file in the root of this project.
+ */
+
+package de.willert.crucible.extendedapi;
 
 import com.atlassian.crucible.spi.PermId;
 import com.atlassian.crucible.spi.data.CommentData;
@@ -8,7 +14,7 @@ import com.atlassian.crucible.spi.data.UserData;
 import com.atlassian.crucible.spi.services.NotFoundException;
 import com.atlassian.crucible.spi.services.NotPermittedException;
 import com.atlassian.crucible.spi.services.ReviewService;
-import de.willert.crucible.reportplugin.extendedapi.util.RESTTest;
+import de.willert.crucible.extendedapi.util.RESTTest;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

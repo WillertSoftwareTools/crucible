@@ -1,4 +1,10 @@
-package de.willert.crucible.reportplugin.extendedapi.util;
+/*
+ * Willert Software Tools GmbH
+ * Copyright (C) 2016 Willert Software Tools GmbH
+ * This file is covered by the LICENSE file in the root of this project.
+ */
+
+package de.willert.crucible.extendedapi.util;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
