@@ -106,28 +106,29 @@ public class ReportServlet extends HttpServlet {
     }
 
     private void step3(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<File> buildPDF;
 
-            updateLines(req);
+        updateLines(req);
 
-            Optional<File> buildPDF;
-            try {
-                buildPDF = pdfBuilder.buildPDF(pdfBuilder.getTransformFile());
-            } catch (Exception | TexParserException e) {
-                throw new IllegalStateException("Error while generating pdf.: " + e.getMessage() + " \n\n" + Arrays.toString(e
-                        .getStackTrace()) + "\n\n" + FileUtils.readFileToString( new File(pdfBuilder.getTransformFile().getParentFile().getAbsoluteFile(), pdfBuilder.getTransformFile().getName().replaceAll("\\..+", ".log")) ));
-            }
+        try {
+            buildPDF = pdfBuilder.buildPDF(pdfBuilder.getTransformFile());
+        } catch (TexParserException e) {
+            throw new IllegalStateException(
+                    "Error while generating pdf.: " + e.getMessage() + " \n\n" + Arrays.toString(e.getStackTrace()));
+        }
 
-            if (buildPDF.isPresent()) {
-                resp.setContentType("application/pdf");
-                resp.setHeader("Content-Disposition", "inline; Filename=\"" + buildPDF.get().getAbsolutePath() + "\";");
-                resp.setContentLength((int) buildPDF.get().length());
-                OutputStream output = resp.getOutputStream();
-                output.write(FileUtils.readFileToByteArray(buildPDF.get()));
-                output.close();
-            } else {
-                throw new IllegalStateException("Error while generating pdf.");
-            }
-
+        if (buildPDF.isPresent()) {
+            resp.setContentType("application/pdf");
+            resp.setHeader("Content-Disposition", "inline; Filename=\"" + buildPDF.get()
+                                                                                  .getAbsolutePath() + "\";");
+            resp.setContentLength((int) buildPDF.get()
+                                                .length());
+            OutputStream output = resp.getOutputStream();
+            output.write(FileUtils.readFileToByteArray(buildPDF.get()));
+            output.close();
+        } else {
+            throw new IllegalStateException("Error while generating pdf.");
+        }
     }
 
     private void step2(HttpServletRequest req, HttpServletResponse response) throws IOException {
