@@ -40,7 +40,6 @@
     <properties>
         <fecru.version>4.2.0-20160928073034</fecru.version>
         <fecru.data.version>4.2.0-20160928073034</fecru.data.version>
-        <jersey1.version>1.19</jersey1.version>
         <webresources.version>3.0.0</webresources.version>
     </properties>
 
