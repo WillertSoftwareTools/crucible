@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>de.willert.crucible</groupId>
-        <artifactId>all</artifactId>
+        <artifactId>parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
