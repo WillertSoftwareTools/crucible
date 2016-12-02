@@ -7,6 +7,16 @@
     <groupId>de.willert.crucible</groupId>
     <artifactId>parent</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <description>Atlassian Fisheye/Crucible projects.</description>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License (GPL)</name>
+            <url>http://www.gnu.org/licenses/gpl.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <organization>
         <name>Willert Software Tools GmbH</name>
@@ -20,8 +30,6 @@
             <email>czoeller@willert.de</email>
         </developer>
     </developers>
-
-    <packaging>pom</packaging>
 
     <modules>
         <module>extended-api</module>
