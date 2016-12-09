@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -194,4 +195,7 @@ public class PDFBuilder {
                         .orElseThrow(() -> new IllegalStateException("Unable to find Logfile!"));
     }
 
+    public Collection<File> getAvailableTemplates() {
+        return templateEnvironment.getAvailableTemplates();
+    }
 }

@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by czoeller on 31.08.16.
@@ -59,6 +60,20 @@ public class TemplateEnvironment {
                                             .findFirst()
                                             .orElseThrow(IllegalStateException::new);
         return Optional.ofNullable(templateFile);
+    }
+
+    /**
+     * Retrieves all template files.
+     * Templates contain "Template" in name.
+     * @return all templates
+     */
+    public Collection<File> getAvailableTemplates() {
+        final Collection<File> files = FileUtils.listFiles(new File(tempDirectory), new String[] {"tex"}, false);
+        final List<File> templates = files.stream()
+                                             .filter(file -> file.getName()
+                                                                 .contains("Template"))
+                                             .collect(Collectors.toList());
+        return templates;
     }
 
     public Optional<File> getTransformFile() {
