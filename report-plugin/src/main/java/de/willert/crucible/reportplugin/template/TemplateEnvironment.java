@@ -25,12 +25,10 @@ import java.util.function.Predicate;
  */
 public class TemplateEnvironment {
     private final String tempDirectory;
-    private final String tmpSubDir;
     private String destinationFilename;
 
     @Inject
     public TemplateEnvironment(String tmpSubDir, String destinationFilename) {
-        this.tmpSubDir = tmpSubDir;
         this.tempDirectory = Paths.get(FileUtils.getTempDirectoryPath(), tmpSubDir).toString();
         this.destinationFilename = destinationFilename;
     }
