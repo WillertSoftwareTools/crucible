@@ -40,7 +40,7 @@ public class TemplateEnvironment {
     public Optional<File> getTemplateFile() {
         final List<String> filesMoved = new ArrayList<>();
 
-        List<String> resources = Lists.newArrayList("template/logo.png", "template/ReportTemplate.tex");
+        List<String> resources = Lists.newArrayList("template/logo.png", "template/ReportTemplate.tex", "template/DevTemplate.tex");
         resources.forEach( s -> {
             try {
                 File targetFile = new File( this.tempDirectory + "/" + s.split("/")[1] );
