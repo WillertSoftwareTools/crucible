@@ -213,7 +213,7 @@ public class ReportServlet extends HttpServlet {
     public List<String> findUnreplacedVariables(final List<String> lines) throws IOException {
         List<String> unreplaced = new Vector<>();
 
-        final Predicate<String> stringPredicate = Pattern.compile("(\\$\\w+)").asPredicate();
+        final Predicate<String> stringPredicate = Pattern.compile("\\$\\w+\\b(?!\\.class)").asPredicate();
 
         lines.stream().filter(stringPredicate)
                       .map(String::trim)
