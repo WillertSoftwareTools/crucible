@@ -133,6 +133,20 @@ public class ReportServlet extends HttpServlet {
 
     private void step2(HttpServletRequest req, HttpServletResponse response) throws IOException {
 
+
+        if( req.getParameterMap().containsKey("select-template")) {
+            String templateFileHash = req.getParameter("select-template");
+            final Optional<File> templateFile = pdfBuilder.getAvailableTemplates()
+                                                   .stream()
+                                                   .filter(file -> 0 == Integer.compare(file.hashCode(),
+                                                                                        Integer.parseInt(
+                                                                                                templateFileHash)))
+                                                   .findFirst();
+            if( templateFile.isPresent() ) {
+                pdfBuilder.setTemplateFile(templateFile.get());
+            }
+        }
+
         updateLines(req);
 
         unreplacedVariables = findUnreplacedVariables(lines);
@@ -173,6 +187,7 @@ public class ReportServlet extends HttpServlet {
             throw new IllegalStateException("No review for reportplugin generation passed. Please just use the UI to get here.");
         }
         templateRenderer.render("view/generatepdf.vm", ImmutableMap.<String, Object>builder().put("permaId", permaId)
+                                                                                             .put("availableTemplates", pdfBuilder.getAvailableTemplates())
                                                                                              .build(), response.getWriter());
     }
 

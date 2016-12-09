@@ -198,4 +198,8 @@ public class PDFBuilder {
     public Collection<File> getAvailableTemplates() {
         return templateEnvironment.getAvailableTemplates();
     }
+
+    public void setTemplateFile(File templateFile) {
+        this.templateFile = templateFile;
+    }
 }
