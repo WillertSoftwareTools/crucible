@@ -104,11 +104,6 @@
             <version>1.8.4</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>de.willert.crucible</groupId>
-            <artifactId>latex-errorparser</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
