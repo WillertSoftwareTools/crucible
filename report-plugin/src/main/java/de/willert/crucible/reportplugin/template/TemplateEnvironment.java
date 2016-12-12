@@ -19,18 +19,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Created by czoeller on 31.08.16.
  */
 public class TemplateEnvironment {
     private final String tempDirectory;
-    private final String tmpSubDir;
     private String destinationFilename;
 
     @Inject
     public TemplateEnvironment(String tmpSubDir, String destinationFilename) {
-        this.tmpSubDir = tmpSubDir;
         this.tempDirectory = Paths.get(FileUtils.getTempDirectoryPath(), tmpSubDir).toString();
         this.destinationFilename = destinationFilename;
     }
@@ -42,7 +41,7 @@ public class TemplateEnvironment {
     public Optional<File> getTemplateFile() {
         final List<String> filesMoved = new ArrayList<>();
 
-        List<String> resources = Lists.newArrayList("template/logo.png", "template/ReportTemplate.tex");
+        List<String> resources = Lists.newArrayList("template/logo.png", "template/ReportTemplate.tex", "template/DevTemplate.tex");
         resources.forEach( s -> {
             try {
                 File targetFile = new File( this.tempDirectory + "/" + s.split("/")[1] );
@@ -61,6 +60,20 @@ public class TemplateEnvironment {
                                             .findFirst()
                                             .orElseThrow(IllegalStateException::new);
         return Optional.ofNullable(templateFile);
+    }
+
+    /**
+     * Retrieves all template files.
+     * Templates contain "Template" in name.
+     * @return all templates
+     */
+    public Collection<File> getAvailableTemplates() {
+        final Collection<File> files = FileUtils.listFiles(new File(tempDirectory), new String[] {"tex"}, false);
+        final List<File> templates = files.stream()
+                                             .filter(file -> file.getName()
+                                                                 .contains("Template"))
+                                             .collect(Collectors.toList());
+        return templates;
     }
 
     public Optional<File> getTransformFile() {

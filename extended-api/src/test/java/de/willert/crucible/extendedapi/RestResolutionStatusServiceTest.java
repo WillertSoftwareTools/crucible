@@ -59,13 +59,13 @@ public class RestResolutionStatusServiceTest extends RESTTest {
     @Test
     public void rejectsInvalidEmptyCId() throws Exception {
         final Response response = restResolutionStatusService.resolutionStatus("");
-        assertResponseContains((String) response.getEntity(), RestResolutionStatusService.ERROR_INVALID_ID);
+        assertResponseContains((String) response.getEntity(), RestResolutionStatusService.ERROR_ID_INVALID);
     }
 
     @Test
     public void rejectsInvalidCId() throws Exception {
         final Response response = restResolutionStatusService.resolutionStatus("helloworld");
-        assertResponseContains((String) response.getEntity(), RestResolutionStatusService.ERROR_INVALID_ID);
+        assertResponseContains((String) response.getEntity(), RestResolutionStatusService.ERROR_ID_INVALID);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class RestResolutionStatusServiceTest extends RESTTest {
 
         final Response response = restResolutionStatusService.resolutionStatus("2");
 
-        assertResponseContains((String) response.getEntity(), RestResolutionStatusService.ERROR_UNKNOWN_ID);
+        assertResponseContains((String) response.getEntity(), RestResolutionStatusService.ERROR_ID_NOT_FOUND);
     }
 
     @Test

@@ -1,0 +1,50 @@
+#* @vtlvariable name="configuration" type="de.willert.crucible.reportplugin.servlets.Configuration" *#
+#* @vtlvariable name="option" type="de.willert.crucible.reportplugin.servlets.Option" *#
+<html>
+<head>
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
+    <meta charset="utf-8">
+    <meta name="decorator" content="atl.admin"/>
+    <title>Generate Report</title>
+</head>
+<body class="aui-page-focused aui-page-size-large">
+<div id="page">
+    <section id="content" role="main">
+        <div class="aui-page-panel">
+            <div class="aui-page-panel-inner">
+                <section class="aui-page-panel-content">
+                    #if($!{status} == "success")
+                        <div class="aui-message aui-message-success">
+                            <p class="title">
+                                <strong>Success!</strong>
+                            </p>
+                            <p>Settings saved.</p>
+                        </div>
+                    #end
+                    <form class="aui" method="post">
+                    #foreach( $key in $keys )
+                        #set( $option = false )
+                        #set( $option = $configuration.get( "$key" ) )
+                        #if ($option)
+                            <div class="field-group">
+                                <label for="config-$option.name()">$option.getDisplayname()</label>
+                                    <input class="text medium-field" type="text"
+                                           id="config-$option.name()" name="config-$option.name()" placeholder="$!{option.getDefaultValue()}" value="$option.getValue()">
+                                    <div class="description">$!{option.getDescription()}</div>
+                            </div>
+                        #end
+                    #end
+                    <div class="buttons-container">
+                        <div class="buttons">
+                            <input class="button submit" type="submit" value="Save" id="config-save-button">
+                        </div>
+                    </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

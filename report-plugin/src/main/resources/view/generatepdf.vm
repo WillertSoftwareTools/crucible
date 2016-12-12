@@ -1,3 +1,4 @@
+#* @vtlvariable name="availableTemplate" type="java.io.File" *#
 #include("view/frag-header.vm")
 <h2>Generate Report</h2>
 <h3>Fetch data for ${permaId}</h3>
@@ -8,6 +9,29 @@
     It is recommended to use Firefox.
 </p>
 <form class="aui" method="post" action="./report-servlet-preview">
-    <input type="submit" class="aui-button aui-button-primary" value="Next" />
+
+    <div class="field-group">
+        <label for="select-template">Template
+            <span class="aui-icon icon-required">(required)</span></label>
+        <select id="select-template" name="select-template">
+            #if( !$availableTemplates.isEmpty() )
+                #foreach( $availableTemplate in $availableTemplates )
+                    <option value="$availableTemplate.hashCode()">$availableTemplate.getName()</option>
+                #end
+            #else
+                <div class="aui-message aui-message-error">
+                    <p class="title">
+                        <strong>Error!</strong>
+                    </p>
+                    No Template available.
+                </div>
+            #end
+        </select>
+        <div class="description">Template for report.</div>
+    </div>
+    <div class="field-group">
+        <input type="submit" class="aui-button aui-button-primary" value="Next" />
+    </div>
+
 </form>
 #include("view/frag-footer.vm")

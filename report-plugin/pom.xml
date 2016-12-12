@@ -17,7 +17,19 @@
 
     <packaging>atlassian-plugin</packaging>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <dependency>
+            <groupId>com.github.No3x</groupId>
+            <artifactId>latex-errorparser</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>de.nixosoft</groupId>
             <artifactId>jlr</artifactId>
@@ -32,11 +44,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-servlet</artifactId>
-            <version>4.1.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -92,11 +99,6 @@
             <version>1.8.4</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>de.willert.crucible</groupId>
-            <artifactId>latex-errorparser</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -105,7 +107,7 @@
                 <groupId>com.atlassian.maven.plugins</groupId>
                 <artifactId>maven-fecru-plugin</artifactId>
                 <!-- Has to match sdk version -->
-                <version>6.2.9</version>
+                <version>${amps.version}</version>
                 <extensions>true</extensions>
                 <configuration>
                     <productVersion>${fecru.version}</productVersion>

@@ -9,8 +9,8 @@ package de.willert.crucible.reportplugin.template;
 import com.google.common.collect.Lists;
 import de.nixosoft.jlr.JLRConverter;
 import de.nixosoft.jlr.JLRGenerator;
-import de.willert.crucible.latex.errorparser.ProblemMarker;
-import de.willert.crucible.latex.errorparser.TexExceptionParser;
+import de.no3x.latex.errorparser.ProblemMarker;
+import de.no3x.latex.errorparser.TexExceptionParser;
 import de.willert.crucible.reportplugin.template.exception.TexParserException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -194,4 +195,11 @@ public class PDFBuilder {
                         .orElseThrow(() -> new IllegalStateException("Unable to find Logfile!"));
     }
 
+    public Collection<File> getAvailableTemplates() {
+        return templateEnvironment.getAvailableTemplates();
+    }
+
+    public void setTemplateFile(File templateFile) {
+        this.templateFile = templateFile;
+    }
 }
