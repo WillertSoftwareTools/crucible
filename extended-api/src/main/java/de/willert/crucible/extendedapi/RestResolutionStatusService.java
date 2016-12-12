@@ -22,8 +22,8 @@ import javax.ws.rs.core.Response;
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class RestResolutionStatusService {
 
-    public static final String ERROR_UNKNOWN_ID = "No comment with this id found.";
-    public static final String ERROR_INVALID_ID = "Id passed is not valid";
+    public static final String ERROR_ID_NOT_FOUND = "No comment with this id found.";
+    public static final String ERROR_ID_INVALID = "Id passed is not valid";
     public static final String ERROR_NOT_PERMITTED = "Not permitted";
 
     private final ReviewService reviewService;
@@ -49,7 +49,7 @@ public class RestResolutionStatusService {
         final PermId<CommentData> commentPermId;
 
         if (cId.isEmpty() || !NumberUtils.isNumber(cId)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(ERROR_INVALID_ID).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(ERROR_ID_INVALID).build();
         }
 
         commentPermId = new PermId<>(cId);
@@ -59,7 +59,7 @@ public class RestResolutionStatusService {
             final CommentResolutionData commentResolutionData = new CommentResolutionData(commentResolution);
             return Response.ok().entity(commentResolutionData).build();
         } catch (NotFoundException nfe) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(ERROR_UNKNOWN_ID).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(ERROR_ID_NOT_FOUND).build();
         } catch (NotPermittedException npe) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(ERROR_NOT_PERMITTED).build();
         } catch (IllegalStateException ise) {
