@@ -5,10 +5,6 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
     </plugin-info>
 
-    <!-- <servlet-context-listener name="Hello World Listener" key="helloWorld" class="de.willert.crucible.reportpluginplugin.reportplugin.PluginConfig">
-        <description>Initialises the Hello World plugin.</description>
-    </servlet-context-listener> -->
-
     <component-import key="templateRenderer" interface="com.atlassian.templaterenderer.TemplateRenderer" filter=""/>
     <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" filter=""/>
     <component-import key="loginUriProvider" interface="com.atlassian.sal.api.auth.LoginUriProvider" filter=""/>
