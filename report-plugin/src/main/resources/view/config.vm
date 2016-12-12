@@ -26,8 +26,8 @@
                         #if ($option)
                             <div class="field-group">
                                 <label for="config-$option.name()">$option.getDisplayname()</label>
-                                    <input class="text medium-field" type="text"
-                                           id="config-$option.name()" name="config-$option.name()" placeholder="$!{option.getDefaultValue()}" value="$option.getValue()">
+                                    <input class="text long-field" type="text"
+                                           id="config-$option.name()" name="config-$option.name()" placeholder="$!{option.getDefaultValue()}" value="$!{option.getValue()}">
                                     <div class="description">$!{option.getDescription()}</div>
                             </div>
                         #end
