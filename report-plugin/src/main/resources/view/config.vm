@@ -2,11 +2,8 @@
 #* @vtlvariable name="option" type="de.willert.crucible.reportplugin.servlets.Option" *#
 <html>
 <head>
-    <meta http-equiv="Cache-Control" content="no-cache">
-    <meta http-equiv="Expires" content="-1">
     <meta charset="utf-8">
     <meta name="decorator" content="atl.admin"/>
-    <title>Generate Report</title>
 </head>
 <body class="aui-page-focused aui-page-size-large">
 <div id="page">
