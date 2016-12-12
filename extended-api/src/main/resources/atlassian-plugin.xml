@@ -5,7 +5,7 @@
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
     </plugin-info>
 
-    <rest key="extended-api-rest" path="/extended-api" version="none">
+    <rest key="extended-api-rest" path="/extended-api" version="1">
         <description>Extended Rest API</description>
     </rest>
 
