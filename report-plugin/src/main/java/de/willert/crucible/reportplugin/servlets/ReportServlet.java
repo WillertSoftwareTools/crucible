@@ -10,9 +10,6 @@ package de.willert.crucible.reportplugin.servlets;
  * Created by czoeller on 16.11.16.
  */
 
-import com.atlassian.sal.api.auth.LoginUriProvider;
-import com.atlassian.sal.api.user.UserManager;
-import com.atlassian.sal.api.user.UserProfile;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
 import com.google.common.collect.ImmutableMap;
@@ -21,6 +18,7 @@ import de.willert.crucible.reportplugin.template.FillTemplateHelper;
 import de.willert.crucible.reportplugin.template.PDFBuilder;
 import de.willert.crucible.reportplugin.template.ReviewTemplate;
 import de.willert.crucible.reportplugin.template.exception.TexParserException;
+import de.willert.crucible.reportplugin.utils.AuthUtils;
 import org.apache.commons.io.FileUtils;
 
 import javax.servlet.ServletException;
@@ -30,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Predicate;
@@ -39,12 +36,11 @@ import java.util.regex.Pattern;
 
 public class ReportServlet extends HttpServlet {
 
-    private final UserManager userManager;
     private final TemplateRenderer templateRenderer;
     private final FillTemplateHelper fillTemplateHelper;
     private final PDFBuilder pdfBuilder;
-    private final LoginUriProvider loginUriProvider;
     private final PageBuilderService pageBuilderService;
+    private final AuthUtils authUtils;
 
     private List<String> messages;
     private List<String> lines;
@@ -52,10 +48,9 @@ public class ReportServlet extends HttpServlet {
     private String permaId;
     private List<String> unreplacedVariables;
 
-    public ReportServlet(LoginUriProvider loginUriProvider, PageBuilderService pageBuilderService, UserManager userManager, TemplateRenderer templateRenderer, FillTemplateHelper fillTemplateHelper, PDFBuilder pdfBuilder) {
-        this.loginUriProvider = loginUriProvider;
+    public ReportServlet(AuthUtils authUtils, PageBuilderService pageBuilderService, TemplateRenderer templateRenderer, FillTemplateHelper fillTemplateHelper, PDFBuilder pdfBuilder) {
         this.pageBuilderService = pageBuilderService;
-        this.userManager = userManager;
+        this.authUtils = authUtils;
         this.templateRenderer = templateRenderer;
         this.fillTemplateHelper = fillTemplateHelper;
         this.pdfBuilder = pdfBuilder;
@@ -71,7 +66,7 @@ public class ReportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         prepareResponse(resp);
-        checkAuthentication(req, resp);
+        authUtils.checkAuthentication(req, resp);
         nextStep = STEPS.enumConstantForPath( req.getServletPath() );
         switch (nextStep) {
             case TWO:
@@ -84,18 +79,6 @@ public class ReportServlet extends HttpServlet {
             default:
                 step1(req, resp);
                 break;
-        }
-    }
-
-    private void checkAuthentication(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        UserProfile user = userManager.getRemoteUser(req);
-        if (null == user) {
-            redirectToLogin(req, resp);
-            return;
-        }
-        if (!userManager.isUserInGroup(user.getUserKey(), "crucible-users")) {
-            resp.sendError(403, "You must be a registered user to generate reports.");
-            return;
         }
     }
 
@@ -202,27 +185,6 @@ public class ReportServlet extends HttpServlet {
                     .getReviewers()
                     .size()));
         }
-    }
-
-    private String getAPPPath(HttpServletRequest request) {
-        String requestURL = request.getRequestURL().toString();
-        String servletPath = request.getServletPath();
-        return requestURL.substring(0, requestURL.indexOf(servletPath));
-    }
-
-    private void redirectToLogin(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        response.sendRedirect(loginUriProvider.getLoginUri(getUri(request)).toASCIIString());
-    }
-    private URI getUri(HttpServletRequest request)
-    {
-        StringBuffer builder = request.getRequestURL();
-        if (request.getQueryString() != null)
-        {
-            builder.append("?");
-            builder.append(request.getQueryString());
-        }
-        return URI.create(builder.toString());
     }
 
     public List<String> findUnreplacedVariables(final List<String> lines) throws IOException {
