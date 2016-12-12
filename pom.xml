@@ -34,12 +34,12 @@
     <modules>
         <module>extended-api</module>
         <module>report-plugin</module>
-        <module>latex-errorparser</module>
     </modules>
 
     <properties>
         <fecru.version>4.2.0-20160928073034</fecru.version>
         <fecru.data.version>4.2.0-20160928073034</fecru.data.version>
+        <amps.version>6.2.9</amps.version>
         <webresources.version>3.0.0</webresources.version>
     </properties>
 
