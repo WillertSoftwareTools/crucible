@@ -16,9 +16,10 @@
                             <p class="title">
                                 <strong>Success!</strong>
                             </p>
-                            <p>Settings saved.</p>
+                            <p>Settings saved</p>
                         </div>
                     #end
+                    <p>Latex syntax is allowed in the values.</p>
                     <form class="aui" method="post">
                     #foreach( $key in $keys )
                         #set( $option = false )
