@@ -33,6 +33,12 @@ public enum Option {
         return value;
     }
 
+    public String getValueOrDefault() {
+        if( null != value && value.isEmpty() )
+            return defaultValue;
+        return value;
+    }
+
     public String getDefaultValue() {
         return defaultValue;
     }
