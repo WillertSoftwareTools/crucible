@@ -11,6 +11,8 @@ import de.nixosoft.jlr.JLRConverter;
 import de.nixosoft.jlr.JLRGenerator;
 import de.no3x.latex.errorparser.ProblemMarker;
 import de.no3x.latex.errorparser.TexExceptionParser;
+import de.willert.crucible.reportplugin.servlets.Configuration;
+import de.willert.crucible.reportplugin.servlets.Option;
 import de.willert.crucible.reportplugin.template.exception.TexParserException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -33,11 +35,13 @@ import java.util.Optional;
 public class PDFBuilder {
     private static final Log log = LogFactory.getLog(PDFBuilder.class);
 
+    private final Configuration configuration;
     private TemplateEnvironment templateEnvironment;
     private File templateFile;
     private File transformFile;
 
-    public PDFBuilder(TemplateEnvironment templateEnvironment) {
+    public PDFBuilder(final Configuration configuration, TemplateEnvironment templateEnvironment) {
+        this.configuration = configuration;
         this.templateEnvironment = templateEnvironment;
         templateFile = templateEnvironment.getTemplateFile()
                                           .orElseThrow(() -> new IllegalStateException("Unable to get Template file"));
@@ -85,6 +89,7 @@ public class PDFBuilder {
 
         converter.replace("reviewTemplate", reviewTemplate);
         converter.replace("imgDir", toLatexStylePath(imageDir.getAbsolutePath()));
+        converter.replace(Option.HEADER_LEFT.name(), configuration.get(Option.HEADER_LEFT).getValueOrDefault() );
 
         converter.parse(templateFile, outputTexFile);
         return outputTexFile;

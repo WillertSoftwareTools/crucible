@@ -11,14 +11,12 @@ package de.willert.crucible.reportplugin.servlets;
  */
 public enum Option {
 
-    TESTOPTION("", "Test Option", "Default Value", "The value of the testoption");
+    HEADER_LEFT("", "Header left", "Example\\\\www.example.com", "Left header value in template on each page.");
 
     private String displayname;
     private String value;
     private final String defaultValue;
     private final String description;
-
-
 
     Option(String value, String displayname, String defaultValue, String description) {
         this.value = value;
