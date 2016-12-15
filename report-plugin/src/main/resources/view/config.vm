@@ -1,5 +1,5 @@
-#* @vtlvariable name="configuration" type="de.willert.crucible.reportplugin.servlets.Configuration" *#
-#* @vtlvariable name="option" type="de.willert.crucible.reportplugin.servlets.Option" *#
+#* @vtlvariable name="configuration" type="de.willert.crucible.reportplugin.config.Configuration" *#
+#* @vtlvariable name="option" type="de.willert.crucible.reportplugin.config.Option" *#
 <html>
 <head>
     <meta charset="utf-8">

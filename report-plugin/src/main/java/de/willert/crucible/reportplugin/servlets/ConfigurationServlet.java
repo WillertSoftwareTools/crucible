@@ -9,6 +9,7 @@ package de.willert.crucible.reportplugin.servlets;
 import com.atlassian.templaterenderer.TemplateRenderer;
 import com.atlassian.webresource.api.assembler.PageBuilderService;
 import com.google.common.collect.ImmutableMap;
+import de.willert.crucible.reportplugin.config.Configuration;
 import de.willert.crucible.reportplugin.utils.AuthUtils;
 import de.willert.crucible.reportplugin.utils.RequestUtils;
 

@@ -4,7 +4,7 @@
  * This file is covered by the LICENSE file in the root of this project.
  */
 
-package de.willert.crucible.reportplugin.servlets;
+package de.willert.crucible.reportplugin.config;
 
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 import org.slf4j.Logger;

@@ -17,7 +17,7 @@
     <component key="AuthUtils" class="de.willert.crucible.reportplugin.utils.AuthUtils" public="false">
         <description>Authentication Utils</description>
     </component>
-    <component key="Configuration" class="de.willert.crucible.reportplugin.servlets.Configuration" public="false">
+    <component key="Configuration" class="de.willert.crucible.reportplugin.config.Configuration" public="false">
         <description>Plugin Configuration</description>
     </component>
     <component key="PDFBuilder" class="de.willert.crucible.reportplugin.template.PDFBuilder" public="false">

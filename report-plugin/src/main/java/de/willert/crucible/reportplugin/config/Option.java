@@ -4,7 +4,7 @@
  * This file is covered by the LICENSE file in the root of this project.
  */
 
-package de.willert.crucible.reportplugin.servlets;
+package de.willert.crucible.reportplugin.config;
 
 /**
  * Created by czoeller on 09.12.16.
