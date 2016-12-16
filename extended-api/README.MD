@@ -3,8 +3,8 @@ This is a Fisheye/Crucible plugin. In FeCru version 4.2.0 the comment resolution
 
 ## Endpoint
 `(...)/rest/extended-api/1/comments/{cId}/resolutionStatus`
-[com.atlassian.crucible.spi.data.CommentResolutionData](https://docs.atlassian.com/fisheye-crucible/4.2.0/javadoc/com/atlassian/crucible/spi/data/CommentResolutionData.html)
-[com.atlassian.crucible.spi.data.CommentResolutionStatus](https://docs.atlassian.com/fisheye-crucible/4.2.0/javadoc/com/atlassian/crucible/spi/data/CommentResolutionStatus.html)
+- [com.atlassian.crucible.spi.data.CommentResolutionData](https://docs.atlassian.com/fisheye-crucible/4.2.0/javadoc/com/atlassian/crucible/spi/data/CommentResolutionData.html)
+- [com.atlassian.crucible.spi.data.CommentResolutionStatus](https://docs.atlassian.com/fisheye-crucible/4.2.0/javadoc/com/atlassian/crucible/spi/data/CommentResolutionStatus.html)
 
 You can communicate with the API per `JSON` and `XML`.
 
