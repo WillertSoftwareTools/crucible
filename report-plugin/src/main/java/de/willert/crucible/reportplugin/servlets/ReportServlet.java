@@ -16,6 +16,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import de.willert.crucible.reportplugin.template.FillTemplateHelper;
 import de.willert.crucible.reportplugin.template.PDFBuilder;
+import de.willert.crucible.reportplugin.template.PatternReplacer;
 import de.willert.crucible.reportplugin.template.ReviewTemplate;
 import de.willert.crucible.reportplugin.template.exception.TexParserException;
 import de.willert.crucible.reportplugin.utils.AuthUtils;
@@ -30,8 +31,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 
 public class ReportServlet extends HttpServlet {
@@ -131,23 +130,27 @@ public class ReportServlet extends HttpServlet {
         }
 
         updateLines(req);
+        replaceVariables(req);
 
-        unreplacedVariables = findUnreplacedVariables(lines);
+        templateRenderer.render("view/generatepdf-preview.vm", ImmutableMap.<String, Object>builder()
+                                                                              .put("permaId", permaId)
+                                                                              .put("lines", lines)
+                                                                              .put("messages", messages)
+                                                                              .put("unreplacedVariables", unreplacedVariables)
+                                                                              .build(), response.getWriter());
+    }
+
+    private void replaceVariables(HttpServletRequest req) throws IOException  {
+        unreplacedVariables = PatternReplacer.findUnreplacedVariables(lines);
         for (Iterator<String> iterator = unreplacedVariables.iterator(); iterator.hasNext();) {
             String unreplacedVariable = iterator.next();
             if( req.getParameterMap().containsKey(unreplacedVariable) ) {
-                lines.replaceAll(s -> s.replaceAll("\\"+unreplacedVariable+"", req.getParameter(unreplacedVariable)));
+                lines = PatternReplacer.replace(lines, unreplacedVariable, req.getParameter(unreplacedVariable));
                 iterator.remove();
             }
         }
         Files.write( pdfBuilder.getTransformFile().toPath(), lines);
         lines = FileUtils.readLines(pdfBuilder.getTransformFile(), "UTF-8");
-        templateRenderer.render("view/generatepdf-preview.vm", ImmutableMap.<String, Object>builder()
-                                                                                                     .put("permaId", permaId)
-                                                                                                     .put("lines", lines)
-                                                                                                     .put("messages", messages)
-                                                                                                     .put("unreplacedVariables", unreplacedVariables)
-                                                                                                     .build(), response.getWriter());
     }
 
     private void updateLines(HttpServletRequest req) throws IOException {
@@ -185,18 +188,6 @@ public class ReportServlet extends HttpServlet {
                     .getReviewers()
                     .size()));
         }
-    }
-
-    public List<String> findUnreplacedVariables(final List<String> lines) throws IOException {
-        List<String> unreplaced = new Vector<>();
-
-        final Predicate<String> stringPredicate = Pattern.compile("\\$\\w+\\b(?!\\.class)").asPredicate();
-
-        lines.stream().filter(stringPredicate)
-                      .map(String::trim)
-                      .forEach(unreplaced::add);
-
-        return unreplaced;
     }
 
 }

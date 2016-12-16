@@ -43,7 +43,6 @@ public class FillTemplateHelper {
         final DetailedReviewData reviewDetails = reviewService.getReviewDetails(permId);
         final List<FisheyeReviewItemData> reviewItems = reviewService.getReviewDetails(permId).getReviewItems().reviewItem;
 
-
         reviewTemplate.setTitle( reviewDetails.getName() );
         reviewTemplate.setAuthor( reviewDetails.getAuthor() );
         reviewTemplate.setReviewers( reviewService.getAllReviewers(permId) );
