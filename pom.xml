@@ -33,7 +33,7 @@
 
     <modules>
         <module>extended-api</module>
-        <module>report-plugin</module>
+        <module>reportplugin</module>
     </modules>
 
     <properties>
