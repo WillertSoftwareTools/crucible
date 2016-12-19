@@ -10,7 +10,6 @@ import com.atlassian.plugin.util.ClassLoaderUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.io.FileUtils;
 
-import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -28,7 +27,6 @@ public class TemplateEnvironment {
     private final String tempDirectory;
     private String destinationFilename;
 
-    @Inject
     public TemplateEnvironment(String tmpSubDir, String destinationFilename) {
         this.tempDirectory = Paths.get(FileUtils.getTempDirectoryPath(), tmpSubDir).toString();
         this.destinationFilename = destinationFilename;
