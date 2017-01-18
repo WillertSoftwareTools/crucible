@@ -7,11 +7,11 @@
     <parent>
         <groupId>de.willert.crucible</groupId>
         <artifactId>parent</artifactId>
-        <version>1.1</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>reportplugin</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <name>reportplugin</name>
     <description>Extension of FishEye/Crucible to generate reports.</description>
 
