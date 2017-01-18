@@ -22,7 +22,7 @@ public class Configuration {
 
     private final PluginSettingsFactory pluginSettingsFactory;
 
-    private static final String SETTINGS_KEY = Configuration.class.getName() + "2";
+    private static final String SETTINGS_KEY = Configuration.class.getName();
     private Properties options;
 
     public Configuration(PluginSettingsFactory pluginSettingsFactory) {
@@ -58,6 +58,7 @@ public class Configuration {
         pluginSettingsFactory.createGlobalSettings().put(SETTINGS_KEY, options);
         options = loadProperties();
     }
+
     public String[] getKeys() {
         return Arrays.stream(Option.values()).map(Enum::name).toArray(String[]::new);
     }
