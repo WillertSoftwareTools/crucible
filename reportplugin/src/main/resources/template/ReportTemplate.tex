@@ -82,9 +82,7 @@
 
 
 %Authors, affiliations address.
-\dedication{#foreach( $reviewer in $reviewTemplate.getReviewers())
-$reviewer.getDisplayName()
-#end}
+\dedication{$reviewTemplate.getReviewersEnumerated()}
 
 \maketitle
 

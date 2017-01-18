@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
  */
 public class ReviewTemplate {
 
-
     private String title;
     private UserData author;
     private Set<ReviewerData> reviewers;
+    private String reviewersEnumerated;
     private Date startDate;
     private List<FisheyeReviewItemData> reviewItems;
     private List<CommentDataImpl> generalComments;
@@ -59,6 +59,13 @@ public class ReviewTemplate {
         return reviewers;
     }
 
+    public void setReviewersEnumerated(String reviewersEnumerated) {
+        this.reviewersEnumerated = reviewersEnumerated;
+    }
+
+    public String getReviewersEnumerated() {
+        return reviewersEnumerated;
+    }
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
@@ -67,7 +74,6 @@ public class ReviewTemplate {
     public Date getStartDate() {
         return startDate;
     }
-
 
     public List<FisheyeReviewItemData> getReviewItems() {
         return reviewItems;

@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.atlassian.crucible.spi.data.FisheyeReviewItemData.FileType.Directory;
 import static java.util.stream.Collectors.toList;
@@ -45,7 +46,12 @@ public class FillTemplateHelper {
 
         reviewTemplate.setTitle( reviewDetails.getName() );
         reviewTemplate.setAuthor( reviewDetails.getAuthor() );
-        reviewTemplate.setReviewers( reviewService.getAllReviewers(permId) );
+        reviewTemplate.setReviewers(reviewService.getAllReviewers(permId));
+        reviewTemplate.setReviewersEnumerated(reviewService.getAllReviewers(permId)
+                                                           .stream()
+                                                           .map(ReviewerData::getDisplayName)
+                                                           .map(Object::toString)
+                                                           .collect(Collectors.joining(", ")));
         reviewTemplate.setStartDate( reviewDetails.getCreateDate() );
         reviewTemplate.setReviewItems( reviewItems
                                                 .stream()
