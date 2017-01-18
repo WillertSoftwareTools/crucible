@@ -34,6 +34,7 @@ public class ReviewTemplate {
     private Date version;
     private Long latestRevision;
     private Map<String, CommentResolutionData> resolutions;
+    private String description;
 
     public String getTitle() {
         return title;
@@ -65,6 +66,14 @@ public class ReviewTemplate {
 
     public String getReviewersEnumerated() {
         return reviewersEnumerated;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setStartDate(Date startDate) {

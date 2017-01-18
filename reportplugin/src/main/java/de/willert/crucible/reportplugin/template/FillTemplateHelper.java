@@ -28,10 +28,12 @@ public class FillTemplateHelper {
 
     private final ReviewService reviewService;
     private final ReviewTemplate reviewTemplate;
+    private final WikiLatexRenderer wikiLatexRenderer;
 
-    public FillTemplateHelper(ReviewService reviewService, ReviewTemplate reviewTemplate) {
+    public FillTemplateHelper(ReviewService reviewService, ReviewTemplate reviewTemplate, WikiLatexRenderer wikiLatexRenderer) {
         this.reviewService = reviewService;
         this.reviewTemplate = reviewTemplate;
+        this.wikiLatexRenderer = wikiLatexRenderer;
     }
 
     /**
@@ -52,6 +54,10 @@ public class FillTemplateHelper {
                                                            .map(ReviewerData::getDisplayName)
                                                            .map(Object::toString)
                                                            .collect(Collectors.joining(", ")));
+        String description = reviewDetails.getDescription();
+        String descriptionLatex = wikiLatexRenderer.markupToLatex( description );
+        reviewTemplate.setDescription(descriptionLatex);
+
         reviewTemplate.setStartDate( reviewDetails.getCreateDate() );
         reviewTemplate.setReviewItems( reviewItems
                                                 .stream()

@@ -117,8 +117,13 @@
 Review start date: $reviewTemplate.getStartDate()\\
 Latest svn qualification branch revision: $reviewTemplate.getLatestRevision()\\
 
+#if ( !$reviewTemplate.getDescription().isEmpty() )
+\subsection{Objectives}
+$reviewTemplate.getDescription()
+#end
+
 #if ( !$reviewTemplate.getReviewers().isEmpty() )
-Reviewer:
+\subsection{Reviewer}
 \begin{itemize}
 #foreach( $reviewer in $reviewTemplate.getReviewers())
     \item{$reviewer.getDisplayName()}

@@ -36,6 +36,16 @@
             <version>2.1</version>
         </dependency>
         <dependency>
+            <groupId>com.github.No3x</groupId>
+            <artifactId>latex-wikitext-builder</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.mylyn.wikitext</groupId>
+            <artifactId>wikitext.confluence</artifactId>
+            <version>0.9.4.I20090220-1600-e3x</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.5</version>

@@ -29,6 +29,9 @@
     <component key="ReviewTemplate" class="de.willert.crucible.reportplugin.template.ReviewTemplate" public="false">
         <description>ReviewTemplate</description>
     </component>
+    <component key="WikiLatexRenderer" class="de.willert.crucible.reportplugin.template.WikiLatexRenderer" public="false">
+        <description>Converts Confluence Wiki-Syntax to latex code.</description>
+    </component>
 
     <servlet key="configurationServlet" name="Configure Plugin" class="de.willert.crucible.reportplugin.servlets.ConfigurationServlet">
         <url-pattern>/report-servlet/config</url-pattern>
