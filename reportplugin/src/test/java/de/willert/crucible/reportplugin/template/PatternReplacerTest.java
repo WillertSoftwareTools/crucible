@@ -6,7 +6,6 @@
 
 package de.willert.crucible.reportplugin.template;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,13 +19,6 @@ import static org.junit.Assert.assertThat;
  * Created by czoeller on 15.12.16.
  */
 public class PatternReplacerTest {
-
-    private PatternReplacer patternReplacer;
-
-    @Before
-    public void setUp() {
-        this.patternReplacer = new PatternReplacer();
-    }
 
     @Test
     public void testNoReplacement() {
