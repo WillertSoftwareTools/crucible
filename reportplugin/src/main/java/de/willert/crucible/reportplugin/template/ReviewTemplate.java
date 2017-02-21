@@ -162,10 +162,10 @@ public class ReviewTemplate {
         StringBuilder output = new StringBuilder();
 
         output.append("\\begin{itemize}\n");
-        comments.forEach(c -> output.append(printComment(c)));
-        comments.forEach(c -> c.getReplies().forEach(r -> {
-            output.append(buildReply(r, "\t"));
-        }));
+        for( CommentData c : comments ) {
+            output.append(printComment(c));
+            c.getReplies().forEach(r -> output.append(buildReply(r, "\t")));
+        }
         output.append("\\end{itemize}\n");
 
         return output.toString();
