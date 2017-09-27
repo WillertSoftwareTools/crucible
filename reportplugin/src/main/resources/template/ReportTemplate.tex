@@ -138,7 +138,7 @@ $reviewTemplate.getDescription()
 
 
 #foreach( $reviewItem in $reviewTemplate.getReviewItems())
-\subsection{$reviewItem.getToPath().replaceAll("branches/([^/]+/)", "").replaceAll("/", "\\slash ").replaceAll("\$", "\\\$")}
+\subsection{$reviewItem.getToPath().replaceAll("branches/([^/]+/)", "").replaceAll("/", "\\slash ").replaceAll("_", "\\_ ").replaceAll("\$", "\\\$")}
     From revision $reviewItem.getFromRevision() to revision $reviewItem.getToRevision()\\
     Commited by: $reviewItem.getAuthorName()\\
     Commit Type: $reviewItem.getCommitType()\\
