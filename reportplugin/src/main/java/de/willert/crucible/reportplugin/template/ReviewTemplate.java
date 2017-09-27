@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  */
 public class ReviewTemplate {
 
+    private final WikiLatexRenderer wikiLatexRenderer;
     private String title;
     private UserData author;
     private Set<ReviewerData> reviewers;
@@ -35,6 +36,10 @@ public class ReviewTemplate {
     private Long latestRevision;
     private Map<String, CommentResolutionData> resolutions;
     private String description;
+
+    public ReviewTemplate(WikiLatexRenderer wikiLatexRenderer) {
+        this.wikiLatexRenderer = wikiLatexRenderer;
+    }
 
     public String getTitle() {
         return title;
@@ -187,8 +192,8 @@ public class ReviewTemplate {
         String resolved = comment.isDefectApproved() ? "(Resolved) " : "";
         String resolution = getResolution(comment);
         return "\t\\item{ " + resolution + "" + defect + "" + resolved + "[" + new SimpleDateFormat().format(comment.getCreateDate()) + "] " + comment.getUser()
-                                                                                                                                    .getDisplayName() + ": " + comment
-                .getMessage() + " }\n";
+                                                                                                                                    .getDisplayName() + ": " + wikiLatexRenderer.markupToLatex(comment
+                .getMessage()) + " }\n";
     }
 
     private String getResolution(CommentData comment) {

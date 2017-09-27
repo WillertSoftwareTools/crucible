@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.github.No3x</groupId>
             <artifactId>latex-wikitext-builder</artifactId>
-            <version>1.2</version>
+            <version>1.3</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.mylyn.wikitext</groupId>

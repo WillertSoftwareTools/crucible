@@ -64,8 +64,6 @@ public class FillTemplateHelper {
                                                 .filter(reviewItem -> !reviewItem.getFileType().equals(Directory))
                                                 .collect(toList()));
 
-        reviewDetails.getGeneralComments().comments.forEach(comment -> comment.setMessage(wikiLatexRenderer.markupToLatex(comment.getMessage())));
-        reviewDetails.getVersionedComments().comments.forEach(comment -> comment.setMessage(wikiLatexRenderer.markupToLatex(comment.getMessage())));
         reviewTemplate.setGeneralComments( reviewDetails.getGeneralComments().comments );
         reviewTemplate.setVersionedComments(reviewDetails.getVersionedComments().comments );
         reviewTemplate.setPermaId(reviewDetails.getPermaId());
